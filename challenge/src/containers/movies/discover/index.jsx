@@ -20,17 +20,6 @@ export default function DiscoverPage() {
 
       <Navbar />
 
-      <main>
-        <div className={style.mainContent}>
-          <Container maxWidth="sm">
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Discover Page
-            </Typography>
-          </Container>
-        </div>
-      </main>
-
-
       <Container className={style.grid} maxWidth="md">
         <Grid container spacing={4}>
           <InfoBox />
