@@ -23,7 +23,7 @@ export default function DiscoverPage(props) {
     async function fetchMovies() {
       const moviesFetched = await MovieService.discover(
         '/discover/movie',
-        { sort_by: 'popularity.asc' },
+        { sort_by: 'popularity.desc' },
       );
 
       setData({ movies: moviesFetched });

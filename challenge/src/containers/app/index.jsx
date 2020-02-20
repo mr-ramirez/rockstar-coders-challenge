@@ -22,7 +22,7 @@ export default function App() {
       const { base_url, poster_sizes } = imageConfiguration;
 
       setData({
-        imageUri: `${base_url}${poster_sizes[2]}`,
+        imageUri: `${base_url}${poster_sizes[5]}`,
       });
     }
     fetchConfiguration();
