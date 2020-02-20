@@ -17,8 +17,7 @@ export function setMovies(movies) {
 export async function fetchMovies(dispatch) {
   dispatch(startFetching());
   const moviesFetched = await MovieService.discover(
-    Constants.MovieService.DiscoverRoute,
-    { sort_by: Constants.MovieService.Filters.PopularityDesc },
+    { sortBy: Constants.MovieService.Filters.PopularityDesc },
   );
 
   dispatch(finishFetching());
