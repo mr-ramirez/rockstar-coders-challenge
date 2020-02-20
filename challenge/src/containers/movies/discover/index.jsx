@@ -9,11 +9,12 @@ import {
   Grid,
 } from '@material-ui/core';
 
+import { truncateText } from './helpers';
 import getStyle from './styles';
+import MovieService from 'services/movieService';
+
 import InfoBox from 'components/InfoBox/index.jsx';
 import Navbar from 'components/Navbar/index.jsx';
-
-import MovieService from 'services/movieService';
 
 const UNAVAILABLE_IMAGE = 'https://6dollarshirts.com/image/cache//data/designs/contentcurrentlyunavailable/contentcurrentlyunavailable-heather-gray-swatch-400x400.jpg';
 
@@ -54,7 +55,7 @@ export default function DiscoverPage() {
                 key={`movie-${index}`}
                 image={movie.poster_path ? `${data.imageUri}${movie.poster_path}` : UNAVAILABLE_IMAGE}
                 title={movie.original_title}
-                description={movie.overview}
+                description={truncateText(movie.overview)}
               />
             ))
           }
