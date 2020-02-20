@@ -1,46 +1,38 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react';
-
-import { useSelector } from 'react-redux';
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Grid } from '@material-ui/core';
 
 import { truncateText } from './helpers';
+import { fetchMovies } from './actions';
 import getStyle from './styles';
 
 import InfoBox from 'components/InfoBox/index.jsx';
-import MovieService from 'services/movieService';
 
 const UNAVAILABLE_IMAGE = 'https://6dollarshirts.com/image/cache//data/designs/contentcurrentlyunavailable/contentcurrentlyunavailable-heather-gray-swatch-400x400.jpg';
 
 export default function DiscoverPage() {
-  const [ data, setData ] = useState({
-    movies: [],
-  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchMovies() {
-      const moviesFetched = await MovieService.discover(
-        '/discover/movie',
-        { sort_by: 'popularity.desc' },
-      );
-
-      setData({ movies: moviesFetched });
-    }
-    fetchMovies();
+    fetchMovies(dispatch);
   }, []);
 
   const style = getStyle();
-  const imageUri = useSelector((state) => state.app.imageUri);
+
+  const {
+    imageUri,
+    movies,
+  } = useSelector((state) => ({
+    imageUri: state.app.imageUri,
+    movies: state.discover.movies,
+  }));
 
   return (
     <React.Fragment>
       <Container className={style.grid} maxWidth="md">
         <Grid container spacing={4}>
           {
-            data.movies.map((movie, index) => (
+            movies.map((movie, index) => (
               <InfoBox
                 key={`movie-${index}`}
                 image={

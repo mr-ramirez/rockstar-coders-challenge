@@ -18,7 +18,7 @@ export default function Navbar(props) {
         </Typography>
       </Toolbar>
 
-      { showProgressBar && <LinearProgress /> }
+      { showProgressBar && <LinearProgress color="secondary" /> }
     </AppBar>
   )
 }
