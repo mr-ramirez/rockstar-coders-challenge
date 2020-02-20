@@ -24,6 +24,6 @@ export async function fetchConfiguration(dispatch) {
   dispatch(startFetching());
   const imageConfiguration = await MovieService.getImagesConfiguration();
 
-  const { base_url, poster_sizes } = imageConfiguration;
-  dispatch(setImageUri(`${base_url}${poster_sizes[5]}`));
+  const { baseUrl, posterSize } = imageConfiguration;
+  dispatch(setImageUri(`${baseUrl}${posterSize}`));
 }

@@ -36,12 +36,12 @@ export default function DiscoverPage() {
               <InfoBox
                 key={`movie-${index}`}
                 image={
-                  imageUri && movie.poster_path
-                    ? `${imageUri}${movie.poster_path}`
+                  imageUri && movie.image
+                    ? `${imageUri}${movie.image}`
                     : UNAVAILABLE_IMAGE
                 }
-                title={movie.original_title}
-                description={truncateText(movie.overview)}
+                title={movie.title}
+                description={truncateText(movie.description)}
               />
             ))
           }

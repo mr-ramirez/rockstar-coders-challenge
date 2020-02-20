@@ -1,47 +1,38 @@
-import fetch from 'node-fetch';
-
 import Constants from 'constants';
+import HttpService from './httpService';
 
 export default {
   getImagesConfiguration: () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': process.env.API_TOKEN,
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-    };
-
-    const route = Constants.MovieService.ConfigurationRoute;
-    const uri = `${process.env.API_URL}${route}?api_key=${process.env.API_KEY}`;
-
-    return fetch(uri, options)
-      .then((response) => response.json())
-      .then((json) => json.images);
+    return HttpService.get(Constants.MovieService.ConfigurationRoute, {})
+      .then((response) => ({
+        baseUrl: response.images.base_url,
+        posterSize: response.images.poster_sizes[5],
+      }));
   },
-  discover: (route, query) => {
-    const queryWithApiKeys = {
-      ...query,
-      api_key: process.env.API_KEY,
+  discover: (parameters) => {
+    const { sortBy } = parameters;
+
+    const query = {
+      sort_by: sortBy !== Constants.MovieService.Filters.PopularityDesc
+        ? Constants.MovieService.Filters.PopularityAsc
+        : Constants.MovieService.Filters.PopularityDesc,
     };
 
-    const params = Object.keys(queryWithApiKeys)
-      .map((key) => `${key}=${queryWithApiKeys[key]}`).join('&');
+    return HttpService.get(Constants.MovieService.DiscoverRoute, query)
+      .then((response) => response.results.map((result) => ({
+        title: result.title,
+        description: result.overview,
+        image: result.poster_path,
+      })));
+  },
+  search: (parameters) => {
+    const query = { query: parameters.value || '' };
 
-    const uri = params !== ''
-      ? `${process.env.API_URL}${route}?${params}`
-      : `${process.env.API_URL}${route}`;
-
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': process.env.API_TOKEN,
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-    };
-
-    return fetch(uri, options)
-      .then((response) => response.json())
-      .then((json) => json.results);
+    return HttpService.get(Constants.MovieService.SearchRoute, query)
+      .then((response) => response.results.map((result) => ({
+        title: result.title,
+        description: result.overview,
+        image: result.poster_path,
+      })));
   }
 };
