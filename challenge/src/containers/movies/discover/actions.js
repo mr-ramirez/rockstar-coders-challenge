@@ -7,6 +7,13 @@ import {
   startFetching,
 } from 'containers/app/actions';
 
+export function setRating(rating) {
+  return {
+    type: ActionTypes.SET_RATING,
+    payload: { rating },
+  };
+}
+
 export function setMovies(movies) {
   return {
     type: ActionTypes.SET_MOVIES,
@@ -14,11 +21,13 @@ export function setMovies(movies) {
   };
 }
 
-export async function fetchMovies(dispatch) {
+export async function fetchMovies(dispatch, filters) {
   dispatch(startFetching());
-  const moviesFetched = await MovieService.discover(
-    { sortBy: Constants.MovieService.Filters.PopularityDesc },
-  );
+
+  const moviesFetched = await MovieService.discover({
+    ...filters,
+    sortBy: Constants.MovieService.Filters.PopularityDesc,
+  });
 
   dispatch(finishFetching());
   dispatch(setMovies(moviesFetched));

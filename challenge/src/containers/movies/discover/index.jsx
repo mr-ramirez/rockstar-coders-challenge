@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Grid, Typography } from '@material-ui/core';
 
 import { truncateText } from 'helpers';
-import { fetchMovies } from './actions';
+import { fetchMovies, setRating } from './actions';
 import getStyle from './styles';
 
 import InfoBox from 'components/InfoBox/index.jsx';
@@ -15,7 +15,7 @@ export default function DiscoverPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchMovies(dispatch);
+    fetchMovies(dispatch, {});
   }, []);
 
   const style = getStyle();
@@ -23,9 +23,11 @@ export default function DiscoverPage() {
   const {
     imageUri,
     movies,
+    rating,
   } = useSelector((state) => ({
     imageUri: state.app.imageUri,
     movies: state.discover.movies,
+    rating: state.discover.rating,
   }));
 
   return (
@@ -35,7 +37,16 @@ export default function DiscoverPage() {
           Discover
         </Typography>
 
-        <RatingControl setFilter={(value) => console.log('STARS: ', value)} />
+        <RatingControl
+          rating={rating}
+          setRating={(newRating) => {
+            dispatch(setRating(newRating));
+
+            if (rating !== newRating) {
+              fetchMovies(dispatch, { rating: newRating });
+            }
+          }}
+        />
 
         <Grid container spacing={4}>
           {

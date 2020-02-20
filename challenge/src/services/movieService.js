@@ -1,6 +1,25 @@
 import Constants from 'constants';
 import HttpService from './httpService';
 
+function determineRating(rating) {
+  switch (rating) {
+    case 1:
+      return [0, 2];
+
+    case 2:
+      return [2, 4];
+
+    case 3:
+      return [4, 6];
+
+    case 4:
+      return [6, 8];
+  
+    default:
+      return [8, 10];
+  }
+}
+
 export default {
   getImagesConfiguration: () => {
     return HttpService.get(Constants.MovieService.ConfigurationRoute, {})
@@ -10,12 +29,16 @@ export default {
       }));
   },
   discover: (parameters) => {
-    const { sortBy } = parameters;
+    const { sortBy, rating } = parameters;
+    const ratingLimit = determineRating(rating);
 
     const query = {
       sort_by: sortBy !== Constants.MovieService.Filters.PopularityDesc
         ? Constants.MovieService.Filters.PopularityAsc
         : Constants.MovieService.Filters.PopularityDesc,
+
+      'vote_average.gte': ratingLimit[0],
+      'vote_average.lte': ratingLimit[1],
     };
 
     return HttpService.get(Constants.MovieService.DiscoverRoute, query)
