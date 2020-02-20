@@ -1,5 +1,7 @@
+var dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
+var webpack = require('webpack');
 
 var htmlPlugin = new HtmlWebpackPlugin({
   template: "./src/index.html",
@@ -33,7 +35,12 @@ const config = {
       },
     ],
   },
-  plugins: [ htmlPlugin ],
+  plugins: [
+    htmlPlugin,
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.parsed),
+    })
+  ],
   resolve: {
     alias: {
       components: path.resolve(__dirname, 'src/components/'),
