@@ -26,7 +26,10 @@ export default {
       })));
   },
   search: (parameters) => {
-    const query = { query: parameters.value || '' };
+    if (!parameters.value) {
+      return [];
+    }
+    const query = { query: parameters.value };
 
     return HttpService.get(Constants.MovieService.SearchRoute, query)
       .then((response) => response.results.map((result) => ({

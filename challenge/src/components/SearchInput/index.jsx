@@ -11,6 +11,9 @@ export default function SearchInput(props) {
   });
 
   const valueChangedHandler = (event) => {
+    if (!event.target.value) {
+      props.search('');
+    }
     setData({ value: event.target.value });
   };
 

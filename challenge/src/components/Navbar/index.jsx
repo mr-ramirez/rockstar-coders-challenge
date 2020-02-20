@@ -19,7 +19,7 @@ export default function Navbar(props) {
           Movie Teather
         </Typography>
 
-        <SearchInput />
+        <SearchInput search={props.search} />
       </Toolbar>
 
       { showProgressBar && <LinearProgress color="secondary" /> }
