@@ -1,17 +1,43 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   Container,
   CssBaseline,
   Grid,
-  Typography,
 } from '@material-ui/core';
 
 import getStyle from './styles';
 import InfoBox from 'components/InfoBox/index.jsx';
 import Navbar from 'components/Navbar/index.jsx';
 
+import MovieService from 'services/movieService';
+
+const UNAVAILABLE_IMAGE = 'https://6dollarshirts.com/image/cache//data/designs/contentcurrentlyunavailable/contentcurrentlyunavailable-heather-gray-swatch-400x400.jpg';
+
 export default function DiscoverPage() {
+  const [ data, setData ] = useState({
+    movies: [],
+    imageUri: '',
+  });
+
+  useEffect(() => {
+    async function fetchInformation() {
+      const imageConfiguration = await MovieService.getImagesConfiguration();
+      const moviesFetched = await MovieService.discover('/discover/movie', { sort_by: 'popularity.asc' });
+
+      const { base_url, poster_sizes } = imageConfiguration;
+
+      setData({
+        movies: moviesFetched,
+        imageUri: `${base_url}${poster_sizes[2]}`,
+      });
+    }
+    fetchInformation();
+  }, []);
+
   const style = getStyle();
 
   return (
@@ -22,12 +48,16 @@ export default function DiscoverPage() {
 
       <Container className={style.grid} maxWidth="md">
         <Grid container spacing={4}>
-          <InfoBox />
-          <InfoBox />
-          <InfoBox />
-          <InfoBox />
-          <InfoBox />
-          <InfoBox />
+          {
+            data.movies.map((movie, index) => (
+              <InfoBox
+                key={`movie-${index}`}
+                image={movie.poster_path ? `${data.imageUri}${movie.poster_path}` : UNAVAILABLE_IMAGE}
+                title={movie.original_title}
+                description={movie.overview}
+              />
+            ))
+          }
         </Grid>
       </Container>
     </React.Fragment>
