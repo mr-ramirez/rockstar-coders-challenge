@@ -2,6 +2,7 @@ import ActionTypes from './actionTypes';
 
 const initialState = {
   movies: [],
+  rating: 5,
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -10,6 +11,12 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         movies: payload.movies,
+      };
+
+    case ActionTypes.SET_RATING:
+      return {
+        ...state,
+        rating: payload.rating,
       };
 
     default:
