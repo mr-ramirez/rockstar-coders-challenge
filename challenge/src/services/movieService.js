@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 
+import Constants from 'constants';
+
 export default {
   getImagesConfiguration: () => {
     const options = {
@@ -10,7 +12,8 @@ export default {
       },
     };
 
-    const uri = `${process.env.API_URL}/configuration?api_key=${process.env.API_KEY}`;
+    const route = Constants.MovieService.ConfigurationRoute;
+    const uri = `${process.env.API_URL}${route}?api_key=${process.env.API_KEY}`;
 
     return fetch(uri, options)
       .then((response) => response.json())

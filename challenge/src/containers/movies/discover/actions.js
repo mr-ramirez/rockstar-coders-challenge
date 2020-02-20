@@ -1,4 +1,5 @@
 import ActionTypes from './actionTypes';
+import Constants from 'constants';
 import MovieService from 'services/movieService';
 
 import {
@@ -16,8 +17,8 @@ export function setMovies(movies) {
 export async function fetchMovies(dispatch) {
   dispatch(startFetching());
   const moviesFetched = await MovieService.discover(
-    '/discover/movie',
-    { sort_by: 'popularity.desc' },
+    Constants.MovieService.DiscoverRoute,
+    { sort_by: Constants.MovieService.Filters.PopularityDesc },
   );
 
   dispatch(finishFetching());
