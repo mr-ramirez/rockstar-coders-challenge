@@ -1,11 +1,15 @@
 import React from 'react';
+
 import {
   AppBar,
+  LinearProgress,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 
-export default function Navbar() {
+export default function Navbar(props) {
+  const { showProgressBar } = props;
+
   return (
     <AppBar position="relative">
       <Toolbar>
@@ -13,6 +17,8 @@ export default function Navbar() {
           Movie Teather
         </Typography>
       </Toolbar>
+
+      { showProgressBar && <LinearProgress /> }
     </AppBar>
   )
 }

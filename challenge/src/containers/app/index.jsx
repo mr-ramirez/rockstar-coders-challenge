@@ -1,40 +1,29 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect } from 'react';
 
 import { CssBaseline } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { fetchConfiguration } from './actions';
 
 import Navbar from 'components/Navbar/index.jsx';
-
-import DiscoverPage from 'containers/movies/discover/index.jsx'
-
-import MovieService from 'services/movieService';
+import DiscoverPage from 'containers/movies/discover/index.jsx';
 
 export default function App() {
-  const [ data, setData ] = useState({
-    imageUri: '',
-  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchConfiguration() {
-      const imageConfiguration = await MovieService.getImagesConfiguration();
-      const { base_url, poster_sizes } = imageConfiguration;
-
-      setData({
-        imageUri: `${base_url}${poster_sizes[5]}`,
-      });
-    }
-    fetchConfiguration();
+    fetchConfiguration(dispatch);
   }, []);
+
+  const loading = useSelector((state) => state.app.loading);
 
   return (
     <React.Fragment>
       <CssBaseline />
 
-      <Navbar />
+      <Navbar showProgressBar={loading} />
 
-      <DiscoverPage imageUri={data.imageUri} />
+      <DiscoverPage />
     </React.Fragment>
   )
 }

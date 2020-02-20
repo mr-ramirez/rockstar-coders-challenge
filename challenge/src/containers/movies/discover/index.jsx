@@ -3,18 +3,19 @@ import React, {
   useState,
 } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import { Container, Grid } from '@material-ui/core';
 
 import { truncateText } from './helpers';
 import getStyle from './styles';
 
 import InfoBox from 'components/InfoBox/index.jsx';
-
 import MovieService from 'services/movieService';
 
 const UNAVAILABLE_IMAGE = 'https://6dollarshirts.com/image/cache//data/designs/contentcurrentlyunavailable/contentcurrentlyunavailable-heather-gray-swatch-400x400.jpg';
 
-export default function DiscoverPage(props) {
+export default function DiscoverPage() {
   const [ data, setData ] = useState({
     movies: [],
   });
@@ -32,6 +33,7 @@ export default function DiscoverPage(props) {
   }, []);
 
   const style = getStyle();
+  const imageUri = useSelector((state) => state.app.imageUri);
 
   return (
     <React.Fragment>
@@ -41,7 +43,11 @@ export default function DiscoverPage(props) {
             data.movies.map((movie, index) => (
               <InfoBox
                 key={`movie-${index}`}
-                image={movie.poster_path ? `${props.imageUri}${movie.poster_path}` : UNAVAILABLE_IMAGE}
+                image={
+                  imageUri && movie.poster_path
+                    ? `${imageUri}${movie.poster_path}`
+                    : UNAVAILABLE_IMAGE
+                }
                 title={movie.original_title}
                 description={truncateText(movie.overview)}
               />
