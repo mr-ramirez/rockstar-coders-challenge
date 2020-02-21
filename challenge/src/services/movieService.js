@@ -65,7 +65,10 @@ export default {
       .then((response) => response.results.map((result) => ({
         title: result.title,
         description: result.overview,
+        genreIds: result.genre_ids,
         image: result.poster_path,
+        releaseDate: result.release_date,
+        language: result.original_language,
       })));
   }
 };
