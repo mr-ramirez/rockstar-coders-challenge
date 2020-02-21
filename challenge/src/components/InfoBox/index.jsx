@@ -1,7 +1,9 @@
 import React from 'react';
 
 import {
+  Button,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   Grid,
@@ -15,6 +17,7 @@ export default function InfoBox(props) {
     image,
     title,
     description,
+    onClick
   } = props;
 
   const style = getStyle();
@@ -37,6 +40,12 @@ export default function InfoBox(props) {
             {description}
           </Typography>
         </CardContent>
+
+        <CardActions>
+          <Button size="small" color="primary" onClick={onClick}>
+            View more
+          </Button>
+        </CardActions>
       </Card>
     </Grid>
   );

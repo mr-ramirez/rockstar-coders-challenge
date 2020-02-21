@@ -46,6 +46,8 @@ export default {
         title: result.title,
         description: result.overview,
         image: result.poster_path,
+        releaseDate: result.release_date,
+        language: result.original_language,
       })));
   },
   search: (parameters) => {
