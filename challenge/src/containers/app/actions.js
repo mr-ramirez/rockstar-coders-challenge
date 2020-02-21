@@ -14,6 +14,13 @@ export function setImageUri(imageUri) {
   };
 }
 
+export function setGenresList(genres) {
+  return {
+    type: ActionTypes.SET_GENRES_LIST,
+    payload: { genres },
+  };
+}
+
 export function startFetching() {
   return {
     type: ActionTypes.START_FETCHING,
@@ -23,7 +30,9 @@ export function startFetching() {
 export async function fetchConfiguration(dispatch) {
   dispatch(startFetching());
   const imageConfiguration = await MovieService.getImagesConfiguration();
+  const genresList = await MovieService.getGenresList();
 
   const { baseUrl, posterSize } = imageConfiguration;
   dispatch(setImageUri(`${baseUrl}${posterSize}`));
+  dispatch(setGenresList(genresList));
 }

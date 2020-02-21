@@ -28,10 +28,12 @@ export default function DiscoverPage() {
   const style = getStyle();
 
   const {
+    genresList,
     imageUri,
     movies,
     rating,
   } = useSelector((state) => ({
+    genresList: state.app.genres,
     imageUri: state.app.imageUri,
     movies: state.discover.movies,
     rating: state.discover.rating,
@@ -67,6 +69,8 @@ export default function DiscoverPage() {
           }
           releaseDate={data.selectedMovie.releaseDate}
           language={data.selectedMovie.language}
+          genreIds={data.selectedMovie.genreIds}
+          genresList={genresList}
         />
       </DetailsView>
 

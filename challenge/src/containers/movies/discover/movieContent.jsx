@@ -9,9 +9,21 @@ import {
 import getStyles from './styles';
 
 export default function MovieContent(props) {
-  const { description, image, releaseDate, language } = props;
-  console.log(props);
+  const {
+    description, image, releaseDate,
+    language, genresList, genreIds,
+  } = props;
+
   const styles = getStyles();
+
+  let genresNames = [];
+
+  if (genreIds) {
+    genresNames = genreIds.map((id) => {
+      const genre = genresList.find((item) => item.id === id);
+      return genre ? genre.name : '';
+    });
+  }
 
   return (
     <div>
@@ -37,6 +49,10 @@ export default function MovieContent(props) {
 
         <Typography variant="body2" color="textSecondary" component="p">
           <strong>Language:</strong> {language ? language.toUpperCase() : ''}
+        </Typography>
+
+        <Typography variant="body2" color="textSecondary" component="p">
+          <strong>Genres:</strong> {genresNames.join(', ')}
         </Typography>
       </CardContent>
     </div>
