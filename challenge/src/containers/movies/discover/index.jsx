@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Grid, Typography } from '@material-ui/core';
 
@@ -6,12 +6,19 @@ import { truncateText } from 'helpers';
 import { fetchMovies, setRating } from './actions';
 import getStyle from './styles';
 
+import DetailsView from 'components/DetailsView/index.jsx';
 import InfoBox from 'components/InfoBox/index.jsx';
+import MovieContent from './movieContent.jsx';
 import RatingControl from 'components/RatingControl/index.jsx';
 
 const UNAVAILABLE_IMAGE = 'https://6dollarshirts.com/image/cache//data/designs/contentcurrentlyunavailable/contentcurrentlyunavailable-heather-gray-swatch-400x400.jpg';
 
 export default function DiscoverPage() {
+  const [ data, setData ] = useState({
+    openDialog: false,
+    selectedMovie: {},
+  });
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,17 +28,52 @@ export default function DiscoverPage() {
   const style = getStyle();
 
   const {
+    genresList,
     imageUri,
     movies,
     rating,
   } = useSelector((state) => ({
+    genresList: state.app.genres,
     imageUri: state.app.imageUri,
     movies: state.discover.movies,
     rating: state.discover.rating,
   }));
 
+  const displayMovieDetails = (movie) => {
+    setData({
+      openDialog: true,
+      selectedMovie: movie,
+    });
+  };
+
+  const hideMovieDetails = () => {
+    setData({
+      openDialog: false,
+      selectedMovie: {},
+    });
+  };
+
   return (
     <React.Fragment>
+      <DetailsView
+        title={data.selectedMovie.title}
+        onClose={hideMovieDetails}
+        open={data.openDialog}
+      >
+        <MovieContent
+          description={data.selectedMovie.description}
+          image={
+            imageUri && data.selectedMovie.image
+              ? `${imageUri}${data.selectedMovie.image}`
+              : UNAVAILABLE_IMAGE
+          }
+          releaseDate={data.selectedMovie.releaseDate}
+          language={data.selectedMovie.language}
+          genreIds={data.selectedMovie.genreIds}
+          genresList={genresList}
+        />
+      </DetailsView>
+
       <Container className={style.grid} maxWidth="md">
         <Typography component="h4" variant="h2" align="center" color="textPrimary" gutterBottom>
           Discover
@@ -60,6 +102,7 @@ export default function DiscoverPage() {
                 }
                 title={movie.title}
                 description={truncateText(movie.description)}
+                onClick={() => displayMovieDetails(movie)}
               />
             ))
           }

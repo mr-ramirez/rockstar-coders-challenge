@@ -28,6 +28,10 @@ export default {
         posterSize: response.images.poster_sizes[5],
       }));
   },
+  getGenresList: () => {
+    return HttpService.get(Constants.MovieService.GenresRoute, {})
+      .then((response) => response.genres);
+  },
   discover: (parameters) => {
     const { sortBy, rating } = parameters;
     const ratingLimit = determineRating(rating);
@@ -45,7 +49,10 @@ export default {
       .then((response) => response.results.map((result) => ({
         title: result.title,
         description: result.overview,
+        genreIds: result.genre_ids,
         image: result.poster_path,
+        releaseDate: result.release_date,
+        language: result.original_language,
       })));
   },
   search: (parameters) => {

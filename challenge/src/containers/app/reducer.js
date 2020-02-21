@@ -1,6 +1,7 @@
 import ActionTypes from './actionTypes';
 
 const initialState = {
+  genres: [],
   imageUri: '',
   loading: false,
 }
@@ -17,6 +18,12 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         imageUri: payload.imageUri,
+      };
+
+    case ActionTypes.SET_GENRES_LIST:
+      return {
+        ...state,
+        genres: payload.genres,
       };
 
     case ActionTypes.START_FETCHING:
